@@ -1,77 +1,78 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Attendance Recorder</title>
-<style>
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  <head>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+      }
 
-#form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 30px 0;
-}
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+      }
 
-#submitBtn {
-  padding: 10px 20px;
-  background-color: blue;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+      th {
+        background-color: #f2f2f2;
+      }
 
-table {
-  width: 80%;
-  margin: 30px 0;
-  border-collapse: collapse;
-}
+      .present {
+        background-color: green;
+      }
 
-th, td {
-  border: 1px solid black;
-  padding: 10px;
-  text-align: center;
-}
+      input[type="text"] {
+        width: 50px;
+        height: 25px;
+        text-align: center;
+      }
 
-.status {
-  background-color: red;
-}
-
-</style>
-</head>
-<body>
-  <div class="container">
-    <h1>Attendance Recorder</h1>
-    <div id="form">
-      <label for="registerNumber">Enter Register Number:</label>
-      <input type="text" id="registerNumber" required>
-      <button id="submitBtn">Submit</button>
-    </div>
-    <table id="attendanceTable">
+      input[type="button"] {
+        width: 120px;
+        height: 30px;
+        margin-left: 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Attendance Recorder</h3>
+    <table>
       <tr>
         <th>Register Number</th>
         <th>Status</th>
         <th>Time</th>
       </tr>
+      <!-- Table Bars -->
       <tr>
         <td>1</td>
-        <td class="status" id="status1"></td>
-        <td class="time" id="time1"></td>
+        <td id="status1"></td>
+        <td id="time1"></td>
       </tr>
-      ...
+      <tr>
+        <td>2</td>
+        <td id="status2"></td>
+        <td id="time2"></td>
+      </tr>
+      <!-- Add the rest of the table bars -->
+      <!-- ... -->
       <tr>
         <td>31</td>
-        <td class="status" id="status31"></td>
-        <td class="time" id="time31"></td>
+        <td id="status31"></td>
+        <td id="time31"></td>
       </tr>
     </table>
-  </div>
-  <script>const submitBtn = document.querySelector("#submitBtn");
+    <br />
+    <input type="text" id="registerNumber" placeholder="Register Number">
+    <input type="button" id="submitBtn" value="Submit">
+    <input type="button" id="checkAbsentBtn" value="Check Absent">
+  </body>
+  <script>
+  const submitBtn = document.querySelector("#submitBtn");
 const registerNumber = document.querySelector("#registerNumber");
 
 submitBtn.addEventListener("click", function() {
@@ -92,6 +93,24 @@ submitBtn.addEventListener("click", function() {
     alert("Invalid Register Number! Enter a number between 1 and 31.");
   }
 });
+
+const checkAbsentBtn = document.querySelector("#checkAbsentBtn");
+checkAbsentBtn.addEventListener("click", function() {
+  let absentList = "";
+  for (let i = 1; i <= 31; i++) {
+    const statusElement = document.querySelector("#status" + i);
+    if (statusElement.textContent === "") {
+      absentList += i + " ";
+    }
+  }
+  if (absentList === "") {
+    alert("All Register Numbers are Present.");
+  } else {
+    const message = "Absent Register Numbers: " + absentList;
+    navigator.clipboard.writeText(message);
+    alert("Absent Register Numbers Copied to Clipboard: " + message);
+  }
+});
+
 </script>
-</body>
 </html>
