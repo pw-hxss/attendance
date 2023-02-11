@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Attendance Recorder</title>
+<style>
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: lightgray;
+}
+</style>
+  </head>
+  <body>
+    <h1>Attendance Recorder</h1>
+    <form id="form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required>
+      <br><br>
+      <label for="date">Date:</label>
+      <input type="date" id="date" required>
+      <br><br>
+      <input type="submit" value="Mark Attendance">
+    </form>
+    <br><br>
+    <table id="attendance">
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+      </tr>
+    </table>
+  </body>
+  <script>document.getElementById("form").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  var name = document.getElementById("name").value;
+  var date = document.getElementById("date").value;
+  var time = new Date().toLocaleTimeString();
+  var table = document.getElementById("attendance");
+
+  // Check if the name already exists in the table
+  for (var i = 1; i < table.rows.length; i++) {
+    if (table.rows[i].cells[0].innerHTML == name) {
+      alert("Attendance already marked for " + name + " on " + date + " at " + time);
+      return;
+    }
+  }
+
+  var row = table.insertRow();
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+  var cell3 = row.insertCell(2);
+  cell1.innerHTML = name;
+  cell2.innerHTML = date;
+  cell3.innerHTML = time;
+});
+
+</script>
+</html>
