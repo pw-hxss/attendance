@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Attendance Recorder</title>
+  <style type="text/css">
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .status {
+      height: 20px;
+      width: 20px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>Register Number</th>
+        <th>Status</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><div class="status" id="status1"></div></td>
+        <td id="time1"></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><div class="status" id="status2"></div></td>
+        <td id="time2"></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><div class="status" id="status3"></div></td>
+        <td id="time3"></td>
+      </tr>
+      <!-- Add the remaining 28 rows -->
+      <tr>
+        <td>28</td>
+        <td><div class="status" id="status28"></div></td>
+        <td id="time28"></td>
+      </tr>
+      <tr>
+        <td>29</td>
+        <td><div class="status" id="status29"></div></td>
+        <td id="time29"></td>
+      </tr>
+      <tr>
+        <td>30</td>
+        <td><div class="status" id="status30"></div></td>
+        <td id="time30"></td>
+      </tr>
+      <tr>
+        <td>31</td>
+        <td><div class="status" id="status31"></div></td>
+        <td id="time31"></td>
+      </tr>
+    </tbody>
+  </table>
+  <br><br>
+  <label for="registerNumber">Enter Register Number: </label>
+  <input type="text" id="registerNumber" required>
+  <button id="submitBtn">Submit</button>
+  <button id="checkAbsentBtn">Check Absent</button>
+  <script>
+  const submitBtn = document.getElementById("submitBtn");
+const checkAbsentBtn = document.getElementById("checkAbsentBtn");
+const registerNumber = document.getElementById("registerNumber");
+
+submitBtn.addEventListener("click", function() {
+  const regNum = registerNumber.value;
+  const statusId = "status" + regNum;
+  const timeId = "time" + regNum;
+  const status = document.getElementById(statusId);
+  const time = document.getElementById(timeId);
+
+  if (!regNum) {
+    alert("Please enter a valid register number!");
+    return;
+  }
+
+  if (status.style.backgroundColor === "green") {
+    alert("This register number has already been recorded!");
+    return;
+  }
+
+  status.style.backgroundColor = "green";
+  time.innerHTML = new Date().toLocaleString();
+  registerNumber.value = "";
+});
+
+checkAbsentBtn.addEventListener("click", function() {
+  let absentList = "Absent Register Numbers: ";
+  for (let i = 1; i <= 31; i++) {
+    const statusId = "status" + i;
+    const status = document.getElementById(statusId);
+    if (status.style.backgroundColor === "red") {
+      absentList += i + ", ";
+    }
+  }
+  absentList = absentList.substring(0, absentList.length - 2);
+  if (absentList === "Absent Register Numbers: ") {
+    absentList = "All register numbers are present.";
+  }
+  copyToClipboard(absentList);
+  alert("Copied to Clipboard: " + absentList);
+});
+
+function copyToClipboard(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  textarea.remove();
+}
+</script>
+</body>
+</html>
