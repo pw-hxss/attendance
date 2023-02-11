@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Attendance Recorder</title>
+<style>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0;
+}
+
+#submitBtn {
+  padding: 10px 20px;
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+table {
+  width: 80%;
+  margin: 30px 0;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
+.status {
+  background-color: red;
+}
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Attendance Recorder</h1>
+    <div id="form">
+      <label for="registerNumber">Enter Register Number:</label>
+      <input type="text" id="registerNumber" required>
+      <button id="submitBtn">Submit</button>
+    </div>
+    <table id="attendanceTable">
+      <tr>
+        <th>Register Number</th>
+        <th>Status</th>
+        <th>Time</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td class="status" id="status1"></td>
+        <td class="time" id="time1"></td>
+      </tr>
+      ...
+      <tr>
+        <td>31</td>
+        <td class="status" id="status31"></td>
+        <td class="time" id="time31"></td>
+      </tr>
+    </table>
+  </div>
+  <script>const submitBtn = document.querySelector("#submitBtn");
+const registerNumber = document.querySelector("#registerNumber");
+
+submitBtn.addEventListener("click", function() {
+  const regNum = parseInt(registerNumber.value);
+
+  if (regNum >= 1 && regNum <= 31) {
+    const statusElement = document.querySelector("#status" + regNum);
+    const timeElement = document.querySelector("#time" + regNum);
+
+    statusElement.style.backgroundColor = "green";
+    statusElement.textContent = "Present";
+
+    const date = new Date();
+    const time = date.toLocaleTimeString();
+
+    timeElement.textContent = time;
+  } else {
+    alert("Invalid Register Number! Enter a number between 1 and 31.");
+  }
+});
+</script>
+</body>
+</html>
