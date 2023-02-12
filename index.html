@@ -1,68 +1,150 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <title>Attendance Recorder</title>
-<style>
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+      }
 
-th, td {
-  border: 1px solid black;
-  padding: 8px;
-  text-align: left;
-}
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+      }
 
-th {
-  background-color: lightgray;
-}
-</style>
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .present {
+        background-color: green;
+      }
+
+      input[type="text"] {
+        width: 50px;
+        height: 25px;
+        text-align: center;
+      }
+
+      input[type="button"] {
+        width: 120px;
+        height: 30px;
+        margin-left: 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
-    <h1>Attendance Recorder</h1>
-    <form id="form">
-      <label for="name">Name:</label>
-      <input type="text" id="name" required>
-      <br><br>
-      <label for="date">Date:</label>
-      <input type="date" id="date" required>
-      <br><br>
-      <input type="submit" value="Mark Attendance">
-    </form>
-    <br><br>
-    <table id="attendance">
+    <table>
       <tr>
-        <th>Name</th>
-        <th>Date</th>
+        <th>Register Number</th>
+        <th>Status</th>
+        <th>Time</th>
+      </tr>
+      <!-- Table Bars -->
+      <tr>
+        <td>1</td>
+        <td id="status1"></td>
+        <td id="time1"></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td id="status2"></td>
+        <td id="time2"></td>
+      </tr>
+      <!-- Add the rest of the table bars -->
+      <!-- ... -->
+      <tr>
+        <td>31</td>
+        <td id="status31"></td>
+        <td id="time31"></td>
       </tr>
     </table>
+    <br />
+    <input type="text" id="registerNumber" placeholder="Register Number">
+    <input type="button" id="submitBtn" value="Submit">
+    <input type="button" id="checkAbsentBtn" value="Check Absent">
   </body>
-  <script>document.getElementById("form").addEventListener("submit", function(event) {
-  event.preventDefault();
+  <script>
 
-  var name = document.getElementById("name").value;
-  var date = document.getElementById("date").value;
-  var time = new Date().toLocaleTimeString();
-  var table = document.getElementById("attendance");
 
-  // Check if the name already exists in the table
-  for (var i = 1; i < table.rows.length; i++) {
-    if (table.rows[i].cells[0].innerHTML == name) {
-      alert("Attendance already marked for " + name + " on " + date + " at " + time);
-      return;
-    }
+
+
+
+
+
+
+
+
+
+let absentList = [];
+
+
+
+
+
+
+
+
+const submitBtn = document.querySelector("#submitBtn");
+const registerNumber = document.querySelector("#registerNumber");
+
+submitBtn.addEventListener("click", function() {
+  const regNum = parseInt(registerNumber.value);
+
+  if (regNum >= 1 && regNum <= 31) {
+    const statusElement = document.querySelector("#status" + regNum);
+    const timeElement = document.querySelector("#time" + regNum);
+
+    statusElement.style.backgroundColor = "green";
+    statusElement.textContent = "Present";
+
+    const date = new Date();
+    const time = date.toLocaleTimeString();
+
+    timeElement.textContent = time;
+  } else {
+    alert("Invalid Register Number! Enter a number between 1 and 31.");
   }
-
-  var row = table.insertRow();
-  var cell1 = row.insertCell(0);
-  var cell2 = row.insertCell(1);
-  var cell3 = row.insertCell(2);
-  cell1.innerHTML = name;
-  cell2.innerHTML = date;
-  cell3.innerHTML = time;
 });
+
+
+
+
+
+
+
+
+
+
+
+
+const checkAbsentBtn = document.getElementById("checkAbsentBtn");
+checkAbsentBtn.addEventListener("click", function () {
+  if (absentList.length === 0) {
+    alert("Everyone is present");
+    return;
+  }
+  let absentString = "Absent: " + absentList.join(", ");
+  const textarea = document.createElement("textarea");
+  textarea.value = absentString;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
+  alert(`Absent register numbers copied to clipboard: ${absentString}`);
+});
+
+window.onload = function () {
+  for (let i = 1; i <= 31; i++) {
+    absentList.push(i);
+  }
+};
 
 </script>
 </html>
